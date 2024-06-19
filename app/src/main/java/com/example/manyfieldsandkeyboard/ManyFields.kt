@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,14 +40,17 @@ import androidx.compose.ui.window.Dialog
 fun ManyTextFields () {
     val scrollState = rememberScrollState()
 
-Box(){
-    Column() {
+Box(){//Самый внешний бокс
+    Box() {
+        Text("Я заголовок")
+    }
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
         ) {
-
-
+                
+            Spacer(modifier = Modifier.height(200.dp))
+            
             Box(Modifier.height(90.dp)) {
                 BasicTextField(
                     value = "0",
@@ -206,19 +211,24 @@ Box(){
                     }
                 }
             }
-
+            Spacer(modifier = Modifier.height(200.dp))
 
         }
-        Box(
-            modifier = Modifier.border(
+
+   Box(
+        modifier = Modifier
+            .border(
                 width = 5.dp, brush = SolidColor(Color.Red),
-                shape = RoundedCornerShape(3.dp)).height(130.dp)
-        ) {
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.height(200.dp)) {
-                Text(text = "I'm a button", modifier = Modifier.height(200.dp))
-            }
+                shape = RoundedCornerShape(3.dp)
+            )
+            .height(150.dp)
+            .padding(16.dp) // Добавлен padding
+    ) {
+        Button(onClick = { /*TODO*/ }, modifier = Modifier.height(130.dp)) {
+            Text(text = "I'm a button")
         }
-    } //конец внешней колонки
+    }
+
     } //конец внешнего бокса
 
 } //конец функции
