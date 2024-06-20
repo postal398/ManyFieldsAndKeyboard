@@ -221,8 +221,9 @@ Box(){//Самый внешний бокс
                 width = 5.dp, brush = SolidColor(Color.Red),
                 shape = RoundedCornerShape(3.dp)
             )
-            .height(150.dp)
-            .padding(16.dp) // Добавлен padding
+            .height(100.dp)
+            .padding(16.dp)
+            .align(Alignment.BottomCenter)
     ) {
         Button(onClick = { /*TODO*/ }, modifier = Modifier.height(130.dp)) {
             Text(text = "I'm a button")
