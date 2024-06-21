@@ -12,23 +12,31 @@
     import androidx.compose.runtime.*
     import androidx.compose.ui.Alignment
     import androidx.compose.ui.Modifier
+    import androidx.compose.ui.focus.onFocusChanged
     import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.graphics.SolidColor
+    import androidx.compose.ui.platform.LocalDensity
+
 
     import androidx.compose.ui.unit.dp
+    import kotlinx.coroutines.launch
 
 
     @Composable
     fun ManyTextFields () {
         val scrollState = rememberScrollState()
 
-
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .imePadding())
+        val coroutineScope = rememberCoroutineScope()
+        val imePadding = WindowInsets.ime
 
 
+        BoxWithConstraints(modifier = Modifier
+        .fillMaxSize())
     {//Самый внешний бокс
+        val screenHeightPx = constraints.maxHeight.toFloat()
+        val density = LocalDensity.current
+
+
         Box(modifier = Modifier.background(Color.Yellow).fillMaxWidth().height(50.dp)) {
             Text("Я заголовок")
         }
@@ -36,7 +44,6 @@
                 modifier = Modifier
                     .verticalScroll(scrollState)
                     .fillMaxSize()
-                    .padding(bottom = 100.dp)
             ) {
 
                 Spacer(modifier = Modifier.height(200.dp))
@@ -45,6 +52,18 @@
                     BasicTextField(
                         value = "0",
                         onValueChange = {},
+                        modifier = Modifier
+                            .onFocusChanged { focusState ->
+                                if (focusState.isFocused) {
+                                    coroutineScope.launch {
+
+                                        val imeHeightPx =  imePadding.getBottom(density)
+                                        //val scrollPosition = screenHeightPx - imeHeightPx - {90.dp.toPx()}
+                                        val scrollPosition = screenHeightPx - imeHeightPx - density.run {90.dp.toPx()}
+                                        scrollState.animateScrollTo(scrollPosition.toInt())
+                                    }
+                                }
+                            }
                     )
                 }
 
@@ -194,7 +213,18 @@
 
                 Box(Modifier.height(115.dp)) {
                     Row() {
-                        BasicTextField(value = "24", onValueChange = {})
+                        BasicTextField(value = "24", onValueChange = {},
+                            modifier = Modifier.onFocusChanged { focusState ->
+                            if (focusState.isFocused) {
+                                coroutineScope.launch {
+                                    val imeHeightPx =  imePadding.getBottom(density)
+
+                                    val scrollPosition = screenHeightPx - imeHeightPx - density.run {90.dp.toPx()}
+                                    scrollState.animateScrollTo(scrollPosition.toInt())
+                                }
+                            }
+                        }
+                            )
                         Column {
                             Text("Hello Hi")
                             BasicTextField(value = "25", onValueChange = {})
@@ -214,7 +244,8 @@
                 .background(Color.Blue)
         ) {
 
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.height(130.dp).fillMaxWidth()) {
+            Button(onClick = { /*TODO*/ }, modifier = Modifier.height(130.dp).fillMaxWidth()
+            ) {
                 Text(text = "I'm a button")
             }
         }
