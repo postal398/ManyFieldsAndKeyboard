@@ -1,5 +1,6 @@
     package com.example.manyfieldsandkeyboard;
 
+    import android.util.Log
     import androidx.compose.foundation.background
     import androidx.compose.foundation.border
     import androidx.compose.foundation.layout.*
@@ -231,20 +232,29 @@
                         }
                     }
                 }
-//                Spacer(modifier = Modifier.height(200.dp))
-
             }
 
+        val imeHeightPx = imePadding.getBottom(density) // Добавлено для получения высоты клавиатуры
+        val imeHeightDp = with(density) { imeHeightPx.toDp() } // Добавлено для преобразования в dp
+        println(imeHeightDp)
+        Log.d("ОтлавливаемВысотуКлавы", imeHeightDp.toString())
        Box(
             modifier = Modifier
-                .imePadding()
-                .border(width = 5.dp, brush = SolidColor(Color.Red),shape = RoundedCornerShape(3.dp)                )
+                .padding(bottom = imeHeightDp) // Добавлено для смещения кнопки на высоту клавиатуры
+                .border(
+                    width = 5.dp,
+                    brush = SolidColor(Color.Red),
+                    shape = RoundedCornerShape(3.dp)
+                )
                 .height(100.dp)
                 .align(Alignment.BottomCenter)
                 .background(Color.Blue)
         ) {
 
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.height(130.dp).fillMaxWidth()
+            Button(onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(130.dp)
             ) {
                 Text(text = "I'm a button")
             }
